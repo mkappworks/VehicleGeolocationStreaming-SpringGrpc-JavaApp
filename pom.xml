@@ -11,6 +11,7 @@
     <modules>
         <module>proto</module>
         <module>producer-service</module>
+        <module>consumer-service</module>
     </modules>
 
     <properties>
