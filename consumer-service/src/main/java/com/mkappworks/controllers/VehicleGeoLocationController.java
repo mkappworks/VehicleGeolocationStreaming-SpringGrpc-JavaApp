@@ -1,6 +1,8 @@
-package com.mkappworks;
+package com.mkappworks.controllers;
 
 import com.google.protobuf.Descriptors;
+import com.mkappworks.dtos.VehicleIdsRequest;
+import com.mkappworks.services.VehicleGeoLocationConsumerService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,6 @@ public class VehicleGeoLocationController {
 
     @PostMapping("vehicle/geolocation")
     public List<Map<String, List<Map<Descriptors.FieldDescriptor, Object>>>> getGeoLocationsByVehicle(@RequestBody VehicleIdsRequest vehicleIds) throws InterruptedException {
-        System.out.println(vehicleIds.ids());
         return vehicleGeoLocationConsumerService.getGeoLocationsByVehicle(vehicleIds.ids());
     }
 }

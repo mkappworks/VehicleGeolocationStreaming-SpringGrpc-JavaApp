@@ -1,4 +1,4 @@
-package com.mkappworks;
+package com.mkappworks.services;
 
 import com.google.protobuf.Descriptors;
 import com.mkappworks.proto.Vehicle;
@@ -33,6 +33,7 @@ public class VehicleGeoLocationConsumerService {
                 new StreamObserver<>() {
                     @Override
                     public void onNext(VehicleGeoLocation vehicleGeoLocation) {
+                        System.out.println("VehicleGeoLocationConsumerService " + vehicleGeoLocation);
                         for (Map<String, List<Map<Descriptors.FieldDescriptor, Object>>> vehicleMap : response) {
                             var vehicleId = vehicleGeoLocation.getVehicle().getVehicleId();
                             if (vehicleMap.containsKey(vehicleId)) {
@@ -67,7 +68,7 @@ public class VehicleGeoLocationConsumerService {
 
         responseObserver.onCompleted();
 
-        boolean await = countDownLatch.await(2, TimeUnit.SECONDS);
+        boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
         return await ? response : Collections.emptyList();
     }
 }
