@@ -17,8 +17,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.devh</groupId>
-            <artifactId>grpc-server-spring-boot-starter</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -30,10 +30,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>net.devh</groupId>
-            <artifactId>grpc-client-spring-boot-starter</artifactId>
-            <scope>test</scope>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty-shaded</artifactId>
+            <version>${io.grpc.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
