@@ -27,8 +27,8 @@ public class GrpcConsumerConfig {
     }
 
     @Bean
-    public VehicleGeoLocationServiceGrpc.VehicleGeoLocationServiceStub vehicleGeoLocationServiceStub(final ManagedChannel vehicleGeoLocationServiceStub) {
-        return VehicleGeoLocationServiceGrpc.newStub(vehicleGeoLocationServiceStub);
+    public VehicleGeoLocationServiceGrpc.VehicleGeoLocationServiceStub vehicleGeoLocationServiceStub(final ManagedChannel managedChannel) {
+        return VehicleGeoLocationServiceGrpc.newStub(managedChannel);
     }
 
 }
