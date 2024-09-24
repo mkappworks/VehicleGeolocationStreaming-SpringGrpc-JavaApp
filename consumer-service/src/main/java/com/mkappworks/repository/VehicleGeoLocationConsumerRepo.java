@@ -29,34 +29,7 @@ public class VehicleGeoLocationConsumerRepo implements VehicleGeoLocationConsume
                     return vehicleMap;
                 }).toList();
 
-        StreamObserver<Vehicle> responseObserver = asyncClient.getGeoLocationsByVehicle(
-                new StreamObserver<>() {
-                    @Override
-                    public void onNext(VehicleGeoLocation vehicleGeoLocation) {
-                        System.out.println("VehicleGeoLocationConsumerService " + vehicleGeoLocation);
-                        for (Map<String, List<Map<String, Object>>> vehicleMap : response) {
-                            var vehicleId = vehicleGeoLocation.getVehicle().getVehicleId();
-                            if (vehicleMap.containsKey(vehicleId)) {
-                                List<Map<String, Object>> existingList = vehicleMap.get(vehicleId);
-                                existingList.add(convertGeoLocationToMap(vehicleGeoLocation.getGeoLocation()));
-                                vehicleMap.put(vehicleId, existingList);
-                                break;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        countDownLatch.countDown();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        countDownLatch.countDown();
-                    }
-                }
-        );
-
+        StreamObserver<Vehicle> responseObserver = asyncClient.getGeoLocationsByVehicle(getStreamObserver(response, countDownLatch));
 
         vehicleIds
                 .forEach(vehicleId ->
@@ -79,10 +52,42 @@ public class VehicleGeoLocationConsumerRepo implements VehicleGeoLocationConsume
         }
     }
 
+    private StreamObserver<VehicleGeoLocation> getStreamObserver(List<Map<String, List<Map<String, Object>>>> response, CountDownLatch countDownLatch) {
+        return new StreamObserver<>() {
+            @Override
+            public void onNext(VehicleGeoLocation vehicleGeoLocation) {
+                System.out.println("VehicleGeoLocationConsumerService " + vehicleGeoLocation);
+                for (Map<String, List<Map<String, Object>>> vehicleMap : response) {
+                    var vehicleId = vehicleGeoLocation.getVehicle().getVehicleId();
+                    if (vehicleMap.containsKey(vehicleId)) {
+                        List<Map<String, Object>> existingList = vehicleMap.get(vehicleId);
+                        existingList.add(convertGeoLocationToMap(vehicleGeoLocation.getGeoLocation()));
+                        vehicleMap.put(vehicleId, existingList);
+                        break;
+                    }
+                }
+            }
+
+
+            @Override
+            public void onError(Throwable throwable) {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        };
+    }
+
     private Map<String, Object> convertGeoLocationToMap(GeoLocation geoLocation) {
         Map<String, Object> geoLocationMap = new HashMap<>();
         geoLocationMap.put("latitude", geoLocation.getLatitude());
         geoLocationMap.put("longitude", geoLocation.getLongitude());
         return geoLocationMap;
     }
+
 }
+
+
