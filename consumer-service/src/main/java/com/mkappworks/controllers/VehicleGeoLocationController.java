@@ -1,6 +1,5 @@
 package com.mkappworks.controllers;
 
-import com.google.protobuf.Descriptors;
 import com.mkappworks.dtos.VehicleIdsRequest;
 import com.mkappworks.services.VehicleGeoLocationConsumerService;
 import lombok.AllArgsConstructor;
