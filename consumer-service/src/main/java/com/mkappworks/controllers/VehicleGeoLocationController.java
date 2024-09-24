@@ -16,7 +16,7 @@ public class VehicleGeoLocationController {
     private final VehicleGeoLocationConsumerService vehicleGeoLocationConsumerService;
 
     @PostMapping("vehicle/geolocation")
-    public List<Map<String, List<Map<Descriptors.FieldDescriptor, Object>>>> getGeoLocationsByVehicle(@RequestBody VehicleIdsRequest vehicleIds) throws InterruptedException {
+    public List<Map<String, List<Map<String, Object>>>> getGeoLocationsByVehicle(@RequestBody VehicleIdsRequest vehicleIds) {
         return vehicleGeoLocationConsumerService.getGeoLocationsByVehicle(vehicleIds.ids());
     }
 }
