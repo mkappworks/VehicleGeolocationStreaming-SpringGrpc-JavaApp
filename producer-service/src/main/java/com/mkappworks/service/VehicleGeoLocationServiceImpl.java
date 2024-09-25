@@ -7,12 +7,14 @@ import com.mkappworks.proto.VehicleGeoLocationServiceGrpc;
 import com.mkappworks.service.handlers.GeoLocationHandler;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @GrpcService
 public class VehicleGeoLocationServiceImpl extends VehicleGeoLocationServiceGrpc.VehicleGeoLocationServiceImplBase {
 
@@ -30,7 +32,7 @@ public class VehicleGeoLocationServiceImpl extends VehicleGeoLocationServiceGrpc
             // Simulate periodic location updates for each vehicle
             scheduler.scheduleAtFixedRate(() -> {
                 try {
-                    GeoLocation geoLocation = geoLocationHandler.getGeoLocation(vehicle);
+                    GeoLocation geoLocation = geoLocationHandler.getGeoLocation();
                     if (geoLocation == null) {
                         responseObserver.onError(new NoGeoLocationException());
                     } else {
@@ -38,7 +40,7 @@ public class VehicleGeoLocationServiceImpl extends VehicleGeoLocationServiceGrpc
                     }
                 } catch (Exception e) {
                     // Log and propagate any internal exceptions
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                     scheduler.shutdown();
                     responseObserver.onError(Status.INTERNAL.withDescription("Internal server error").withCause(e).asRuntimeException());
                     responseObserver.onCompleted();
@@ -47,7 +49,7 @@ public class VehicleGeoLocationServiceImpl extends VehicleGeoLocationServiceGrpc
 
         } catch (Exception e) {
             // Log the error and return it to the client
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             scheduler.shutdown();
             responseObserver.onError(Status.UNKNOWN.withDescription("An unknown error occurred").withCause(e).asRuntimeException());
             responseObserver.onCompleted();
