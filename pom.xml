@@ -31,7 +31,7 @@
         <os.maven.plugin.version>1.7.1</os.maven.plugin.version>
         <protobuf.java.util.version>3.25.4</protobuf.java.util.version>
         <lombok.version>1.18.34</lombok.version>
-        <io.grpc.version>1.66.0</io.grpc.version>
+        <grpc.spring.version>3.1.0.RELEASE</grpc.spring.version>
     </properties>
 
     <dependencyManagement>
@@ -40,6 +40,16 @@
                 <groupId>com.mkappworks</groupId>
                 <artifactId>proto</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>net.devh</groupId>
+                <artifactId>grpc-server-spring-boot-starter</artifactId>
+                <version>${grpc.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.devh</groupId>
+                <artifactId>grpc-client-spring-boot-starter</artifactId>
+                <version>${grpc.spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.protobuf</groupId>
