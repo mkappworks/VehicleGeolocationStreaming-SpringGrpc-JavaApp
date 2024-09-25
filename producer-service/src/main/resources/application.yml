@@ -1,3 +1,14 @@
+spring:
+  application:
+    name: producer-service
+  lifecycle:
+    timeout-per-shutdown-phase: "2m"
+
+server:
+  port: 8080
+  http2:
+    enabled: true
+
 grpc:
   server:
     port: 9000

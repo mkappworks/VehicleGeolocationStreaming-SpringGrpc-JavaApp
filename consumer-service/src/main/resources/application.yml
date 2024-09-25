@@ -1,12 +1,18 @@
 spring:
   application:
     name: consumer-service
-
-grpc:
-  client:
-    grpc-service:
-      address: static://localhost:9000
-      negotiationType: plaintext
+  lifecycle:
+    timeout-per-shutdown-phase: "2m"
 
 server:
   port: 8081
+  http2:
+    enabled: true
+
+consumer-service:
+  vehicle-geo-location:
+    host: localhost
+    port: 9000
+
+geo-location:
+  waitTime: 4

@@ -1,4 +1,4 @@
-package com.mkappworks;
+package com.mkappworks.dtos;
 
 import java.util.List;
 
