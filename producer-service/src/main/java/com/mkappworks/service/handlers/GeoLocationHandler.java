@@ -16,11 +16,11 @@ public class GeoLocationHandler {
         random = new Random();
     }
 
-    public GeoLocation getGeoLocation(Vehicle vehicle) {
+    public GeoLocation getGeoLocation() {
         float latitude = -90 + (90 - (-90)) * random.nextFloat();
         float longitude = -180 + (180 - (-180)) * random.nextFloat();
 
-        Instant now = Instant.now();
+//        Instant now = Instant.now();
 
 //        Timestamp timestamp = Timestamp.newBuilder()
 //                .setSeconds(now.getEpochSecond())
