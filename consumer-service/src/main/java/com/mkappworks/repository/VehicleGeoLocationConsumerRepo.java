@@ -4,8 +4,8 @@ import com.mkappworks.proto.GeoLocation;
 import com.mkappworks.proto.Vehicle;
 import com.mkappworks.proto.VehicleGeoLocation;
 import com.mkappworks.proto.VehicleGeoLocationServiceGrpc;
+import com.mkappworks.services.config.GeoLocationProperties;
 import io.grpc.stub.StreamObserver;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -13,10 +13,17 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @Repository
-@RequiredArgsConstructor
 public class VehicleGeoLocationConsumerRepo implements VehicleGeoLocationConsumerRepoInterface {
 
     private final VehicleGeoLocationServiceGrpc.VehicleGeoLocationServiceStub asyncClient;
+    private final int waitTime;
+
+    public VehicleGeoLocationConsumerRepo(
+            VehicleGeoLocationServiceGrpc.VehicleGeoLocationServiceStub asyncClient,
+            GeoLocationProperties geoLocationProperties) {
+        this.asyncClient = asyncClient;
+        this.waitTime = geoLocationProperties.getWaitTime();
+    }
 
     public List<Map<String, List<Map<String, Object>>>> getGeoLocationsByVehicle(List<String> vehicleIds) {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -39,11 +46,12 @@ public class VehicleGeoLocationConsumerRepo implements VehicleGeoLocationConsume
                                         .build()
                         ));
 
-        responseObserver.onCompleted();
 
         try {
-            boolean await = countDownLatch.await(10, TimeUnit.SECONDS);
-            return await ? response : Collections.emptyList();
+            boolean await = countDownLatch.await(waitTime, TimeUnit.SECONDS);
+            responseObserver.onCompleted();
+
+            return response;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt(); // Restore interrupt status.
             // Log or handle the interruption in some way

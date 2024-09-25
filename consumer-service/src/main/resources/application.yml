@@ -13,3 +13,6 @@ consumer-service:
   vehicle-geo-location:
     host: localhost
     port: 9000
+
+geo-location:
+  waitTime: 4
