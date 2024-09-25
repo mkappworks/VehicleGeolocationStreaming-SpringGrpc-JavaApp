@@ -1,10 +1,11 @@
 package com.mkappworks.service;
 
-import com.mkappworks.exceptions.StreamObserverException;
+import com.mkappworks.exceptions.NoGeoLocationException;
+import com.mkappworks.proto.GeoLocation;
 import com.mkappworks.proto.Vehicle;
-import com.mkappworks.proto.VehicleGeoLocation;
 import com.mkappworks.proto.VehicleGeoLocationServiceGrpc;
-import com.mkappworks.service.handlers.VehicleGeoLocationGeneratorHandler;
+import com.mkappworks.service.handlers.GeoLocationHandler;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
@@ -15,45 +16,41 @@ import java.util.concurrent.TimeUnit;
 @GrpcService
 public class VehicleGeoLocationServiceImpl extends VehicleGeoLocationServiceGrpc.VehicleGeoLocationServiceImplBase {
 
-    private final VehicleGeoLocationGeneratorHandler vehicleGeoLocationGeneratorService;
+    private final GeoLocationHandler geoLocationHandler;
     private final ScheduledExecutorService scheduler;
 
-    VehicleGeoLocationServiceImpl(VehicleGeoLocationGeneratorHandler grpcVehicleGeoLocationService) {
-        this.vehicleGeoLocationGeneratorService = grpcVehicleGeoLocationService;
-        scheduler = Executors.newScheduledThreadPool(1);
+    VehicleGeoLocationServiceImpl(GeoLocationHandler geoLocationHandler) {
+        this.geoLocationHandler = geoLocationHandler;
+        this.scheduler = Executors.newScheduledThreadPool(1);
     }
 
     @Override
-    public StreamObserver<Vehicle> getGeoLocationsByVehicle(StreamObserver<VehicleGeoLocation> responseObserver) {
+    public void getGeoLocationsByVehicle(Vehicle vehicle, StreamObserver<GeoLocation> responseObserver) {
+        try {
+            // Simulate periodic location updates for each vehicle
+            scheduler.scheduleAtFixedRate(() -> {
+                try {
+                    GeoLocation geoLocation = geoLocationHandler.getGeoLocation(vehicle);
+                    if (geoLocation == null) {
+                        responseObserver.onError(new NoGeoLocationException());
+                    } else {
+                        responseObserver.onNext(geoLocation);
+                    }
+                } catch (Exception e) {
+                    // Log and propagate any internal exceptions
+                    e.printStackTrace();
+                    scheduler.shutdown();
+                    responseObserver.onError(Status.INTERNAL.withDescription("Internal server error").withCause(e).asRuntimeException());
+                    responseObserver.onCompleted();
+                }
+            }, 0, 2, TimeUnit.SECONDS);
 
-        return new StreamObserver<>() {
-            @Override
-            public void onNext(Vehicle vehicle) {
-
-                // Simulate periodic location updates for each vehicle
-                scheduler.scheduleAtFixedRate(() -> {
-                    VehicleGeoLocation vehicleGeoLocation = vehicleGeoLocationGeneratorService.getVehicleGeoLocation(vehicle);
-                    System.out.println("VehicleGeoLocationConsumerService  vehicleGeoLocation" + vehicleGeoLocation);
-
-                    responseObserver.onNext(vehicleGeoLocation);
-
-                }, 0, 2, TimeUnit.SECONDS);
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                System.err.println("Error in vehicle stream: " + t.getMessage());
-                responseObserver.onError(t);
-                throw (new StreamObserverException(t));
-            }
-
-            @Override
-            public void onCompleted() {
-                System.out.println("VehicleGeoLocationConsumerService onCompleted");
-                scheduler.shutdown();
-                responseObserver.onCompleted();
-            }
-        };
+        } catch (Exception e) {
+            // Log the error and return it to the client
+            e.printStackTrace();
+            scheduler.shutdown();
+            responseObserver.onError(Status.UNKNOWN.withDescription("An unknown error occurred").withCause(e).asRuntimeException());
+            responseObserver.onCompleted();
+        }
     }
-
 }
