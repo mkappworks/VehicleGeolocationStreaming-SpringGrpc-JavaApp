@@ -1,13 +1,10 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 option java_multiple_files = true;
 
 package com.mkappworks.proto;
-
-message VehicleGeoLocation{
-  Vehicle vehicle = 1;
-  GeoLocation geoLocation = 2;
-}
 
 message Vehicle {
   string vehicle_id = 1;
@@ -16,10 +13,11 @@ message Vehicle {
 message GeoLocation {
   float longitude = 1;
   float latitude = 2;
+  google.protobuf.Timestamp time_stamp = 3;
 }
 
 service VehicleGeoLocationService {
   //bi-directional streaming - Asynchronous
   //client will send stream of request and server will respond with stream of response.
-  rpc getGeoLocationsByVehicle(stream Vehicle) returns (stream VehicleGeoLocation) {}
+  rpc getGeoLocationsByVehicle(Vehicle) returns (stream GeoLocation) {}
 }
