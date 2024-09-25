@@ -17,7 +17,7 @@ public class GeoLocationSubscriptionInitializer implements CommandLineRunner {
     private final GeoLocationListener listener;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         this.locationClient
                 .withWaitForReady()
                 .getGeoLocationsByVehicle(Vehicle.newBuilder().setVehicleId("1").build(), listener);
