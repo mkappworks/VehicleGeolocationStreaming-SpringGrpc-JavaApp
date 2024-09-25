@@ -1,32 +1,38 @@
 package com.mkappworks.service.handlers;
 
+import com.google.protobuf.Timestamp;
 import com.mkappworks.proto.GeoLocation;
 import com.mkappworks.proto.Vehicle;
-import com.mkappworks.proto.VehicleGeoLocation;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Random;
 
 @Service
-public class VehicleGeoLocationGeneratorHandler {
+public class GeoLocationHandler {
     private final Random random;
 
-    VehicleGeoLocationGeneratorHandler() {
+    GeoLocationHandler() {
         random = new Random();
     }
 
-    public VehicleGeoLocation getVehicleGeoLocation(Vehicle vehicle) {
+    public GeoLocation getGeoLocation(Vehicle vehicle) {
         float latitude = -90 + (90 - (-90)) * random.nextFloat();
         float longitude = -180 + (180 - (-180)) * random.nextFloat();
 
-        GeoLocation geoLocation = GeoLocation.newBuilder()
+        Instant now = Instant.now();
+
+//        Timestamp timestamp = Timestamp.newBuilder()
+//                .setSeconds(now.getEpochSecond())
+//                .setNanos(now.getNano())
+//                .build();
+
+        return GeoLocation.newBuilder()
                 .setLongitude(longitude)
                 .setLatitude(latitude)
+//                .setTimeStamp(timestamp)
                 .build();
 
-        return VehicleGeoLocation.newBuilder()
-                .setVehicle(vehicle)
-                .setGeoLocation(geoLocation)
-                .build();
+
     }
 }
