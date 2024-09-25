@@ -48,9 +48,8 @@ public class VehicleGeoLocationServiceImpl extends VehicleGeoLocationServiceGrpc
             @Override
             public void onCompleted() {
                 System.out.println("VehicleGeoLocationConsumerService onCompleted");
-//                scheduler.shutdown();
-//                vehicleGeoLocations.forEach(responseObserver::onNext);
-//                responseObserver.onCompleted();
+                scheduler.shutdown();
+                responseObserver.onCompleted();
             }
         };
     }
