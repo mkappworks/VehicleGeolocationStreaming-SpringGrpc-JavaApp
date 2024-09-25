@@ -1,24 +1,14 @@
 package com.mkappworks.repository;
 
-import com.mkappworks.proto.GeoLocation;
-import com.mkappworks.proto.Vehicle;
-import com.mkappworks.proto.VehicleGeoLocation;
 import com.mkappworks.proto.VehicleGeoLocationServiceGrpc;
-import com.mkappworks.services.config.GeoLocationProperties;
-import io.grpc.stub.StreamObserver;
+import com.mkappworks.service.config.GeoLocationProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 public class VehicleGeoLocationConsumerRepoTest {
 

@@ -2,7 +2,7 @@ package com.mkappworks.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mkappworks.dtos.VehicleIdsRequest;
-import com.mkappworks.services.VehicleGeoLocationConsumerService;
+import com.mkappworks.service.VehicleGeoLocationConsumerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

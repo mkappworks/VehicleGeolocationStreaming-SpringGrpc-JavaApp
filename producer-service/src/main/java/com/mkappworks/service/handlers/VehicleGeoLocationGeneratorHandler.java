@@ -1,4 +1,4 @@
-package com.mkappworks.services;
+package com.mkappworks.service.handlers;
 
 import com.mkappworks.proto.GeoLocation;
 import com.mkappworks.proto.Vehicle;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
-public class VehicleGeoLocationGeneratorService {
+public class VehicleGeoLocationGeneratorHandler {
     private final Random random;
 
-    VehicleGeoLocationGeneratorService() {
+    VehicleGeoLocationGeneratorHandler() {
         random = new Random();
     }
 

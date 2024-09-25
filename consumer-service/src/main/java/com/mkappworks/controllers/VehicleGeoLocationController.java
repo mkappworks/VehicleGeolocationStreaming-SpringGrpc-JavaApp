@@ -1,7 +1,7 @@
 package com.mkappworks.controllers;
 
 import com.mkappworks.dtos.VehicleIdsRequest;
-import com.mkappworks.services.VehicleGeoLocationConsumerService;
+import com.mkappworks.service.VehicleGeoLocationConsumerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

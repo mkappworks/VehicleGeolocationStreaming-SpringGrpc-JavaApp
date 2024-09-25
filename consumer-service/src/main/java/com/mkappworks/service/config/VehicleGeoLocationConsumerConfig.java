@@ -1,4 +1,4 @@
-package com.mkappworks.services.config;
+package com.mkappworks.service.config;
 
 import com.mkappworks.proto.VehicleGeoLocationServiceGrpc;
 import com.mkappworks.repository.VehicleGeoLocationConsumerRepo;

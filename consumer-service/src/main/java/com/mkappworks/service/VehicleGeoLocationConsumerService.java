@@ -1,4 +1,4 @@
-package com.mkappworks.services;
+package com.mkappworks.service;
 
 import com.mkappworks.repository.VehicleGeoLocationConsumerRepoInterface;
 import lombok.RequiredArgsConstructor;

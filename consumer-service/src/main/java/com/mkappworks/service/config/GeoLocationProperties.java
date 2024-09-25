@@ -1,4 +1,4 @@
-package com.mkappworks.services.config;
+package com.mkappworks.service.config;
 
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

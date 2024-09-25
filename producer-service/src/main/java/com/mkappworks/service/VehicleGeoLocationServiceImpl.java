@@ -1,23 +1,24 @@
-package com.mkappworks.grpc;
+package com.mkappworks.service;
 
+import com.mkappworks.exceptions.StreamObserverException;
 import com.mkappworks.proto.Vehicle;
 import com.mkappworks.proto.VehicleGeoLocation;
 import com.mkappworks.proto.VehicleGeoLocationServiceGrpc;
-import com.mkappworks.services.VehicleGeoLocationGeneratorService;
+import com.mkappworks.service.handlers.VehicleGeoLocationGeneratorHandler;
 import io.grpc.stub.StreamObserver;
-import org.springframework.stereotype.Service;
+import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Service
+@GrpcService
 public class VehicleGeoLocationServiceImpl extends VehicleGeoLocationServiceGrpc.VehicleGeoLocationServiceImplBase {
 
-    private final VehicleGeoLocationGeneratorService vehicleGeoLocationGeneratorService;
+    private final VehicleGeoLocationGeneratorHandler vehicleGeoLocationGeneratorService;
     private final ScheduledExecutorService scheduler;
 
-    VehicleGeoLocationServiceImpl(VehicleGeoLocationGeneratorService grpcVehicleGeoLocationService) {
+    VehicleGeoLocationServiceImpl(VehicleGeoLocationGeneratorHandler grpcVehicleGeoLocationService) {
         this.vehicleGeoLocationGeneratorService = grpcVehicleGeoLocationService;
         scheduler = Executors.newScheduledThreadPool(1);
     }
@@ -43,6 +44,7 @@ public class VehicleGeoLocationServiceImpl extends VehicleGeoLocationServiceGrpc
             public void onError(Throwable t) {
                 System.err.println("Error in vehicle stream: " + t.getMessage());
                 responseObserver.onError(t);
+                throw (new StreamObserverException(t));
             }
 
             @Override

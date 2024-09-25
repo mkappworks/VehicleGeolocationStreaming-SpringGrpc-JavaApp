@@ -4,7 +4,7 @@ import com.mkappworks.proto.GeoLocation;
 import com.mkappworks.proto.Vehicle;
 import com.mkappworks.proto.VehicleGeoLocation;
 import com.mkappworks.proto.VehicleGeoLocationServiceGrpc;
-import com.mkappworks.services.config.GeoLocationProperties;
+import com.mkappworks.service.config.GeoLocationProperties;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Repository;
 
