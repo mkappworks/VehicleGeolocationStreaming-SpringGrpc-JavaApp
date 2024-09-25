@@ -76,3 +76,13 @@ Develop two Spring Boot applications:
     }
     ]
     ```
+
+### 3. Generating test coverage
+
+* from the main dir run the following command
+
+    ```bash
+    mvn clean test site
+    ```
+
+Open the following file to see the results directly in a browser : target/site/jacoco/index.html
