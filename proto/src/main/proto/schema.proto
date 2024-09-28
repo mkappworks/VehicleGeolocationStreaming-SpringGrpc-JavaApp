@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
-
 option java_multiple_files = true;
 
 package com.mkappworks.proto;
@@ -11,9 +9,10 @@ message Vehicle {
 }
 
 message GeoLocation {
-  float longitude = 1;
-  float latitude = 2;
-  google.protobuf.Timestamp time_stamp = 3;
+  string vehicle_id = 1;
+  float longitude = 2;
+  float latitude = 3;
+  uint64 time_stamp = 4;
 }
 
 service VehicleGeoLocationService {
