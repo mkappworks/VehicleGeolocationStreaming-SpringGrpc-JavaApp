@@ -1,12 +1,12 @@
 package com.mkappworks.dto;
 
-import com.google.protobuf.Timestamp;
 import lombok.Builder;
 
 @Builder
 public record GeoLocationResponse(
+        String vehicleId,
         float latitude,
         float longitude,
-        Timestamp timestamp) {
+        long timestamp) {
 }
 
