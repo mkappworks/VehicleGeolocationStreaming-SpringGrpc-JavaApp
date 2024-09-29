@@ -1,9 +1,9 @@
 package com.mkappworks.service.advice;
 
-import com.mkappworks.exceptions.NoGeoLocationException;
 import com.mkappworks.exceptions.InternalStatusRunTimeException;
 import com.mkappworks.exceptions.UnKnownStatusRunTimeException;
 import com.mkappworks.exceptions.VehicleNotFoundException;
+
 import io.grpc.Status;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,11 +20,6 @@ public class ServiceExceptionHandler {
     @ExceptionHandler(UnKnownStatusRunTimeException.class)
     public Status handleStreamObserverException(UnKnownStatusRunTimeException e) {
         return Status.UNKNOWN.withDescription(e.getMessage());
-    }
-
-    @ExceptionHandler(NoGeoLocationException.class)
-    public Status handleNoGeoLocationException(NoGeoLocationException e) {
-        return Status.NOT_FOUND.withDescription(e.getMessage());
     }
 
     @ExceptionHandler(VehicleNotFoundException.class)

@@ -1,7 +1,6 @@
 package com.mkappworks.service.advice;
 
 import com.mkappworks.exceptions.InternalStatusRunTimeException;
-import com.mkappworks.exceptions.NoGeoLocationException;
 import com.mkappworks.exceptions.UnKnownStatusRunTimeException;
 import com.mkappworks.exceptions.VehicleNotFoundException;
 
@@ -37,16 +36,6 @@ class ServiceExceptionHandlerTest {
 
         assertEquals(Status.UNKNOWN.getCode(), result.getCode(), "Expected UNKNOWN gRPC status");
         assertEquals("An unknown error occurred", result.getDescription(), "Expected correct exception message in description");
-    }
-
-    @Test
-    void handle_no_geo_location_exception_should_return_not_found_status() {
-        NoGeoLocationException exception = new NoGeoLocationException();
-
-        Status result = serviceExceptionHandler.handleNoGeoLocationException(exception);
-
-        assertEquals(Status.NOT_FOUND.getCode(), result.getCode(), "Expected NOT_FOUND gRPC status");
-        assertEquals("GeoLocation not found for vehicle", result.getDescription(), "Expected correct exception message in description");
     }
 
     @Test
