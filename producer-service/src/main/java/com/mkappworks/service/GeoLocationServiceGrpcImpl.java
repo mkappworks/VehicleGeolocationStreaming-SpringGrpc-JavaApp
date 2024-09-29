@@ -33,9 +33,7 @@ public class GeoLocationServiceGrpcImpl extends ReactorVehicleGeoLocationService
             return Flux.interval(Duration.ofSeconds(geoLocationProperties.getWaitTime()))
                     .flatMap(tick -> {
                         try {
-                            if (vehicle == null) return Mono.error(new VehicleNotFoundException());
                             GeoLocation geoLocation = geoLocationHandler.getGeoLocation(vehicle);
-
                             return Mono.just(geoLocation);
                         } catch (Exception e) {
                             // Log the error and return a Mono error to propagate it downstream
