@@ -1,5 +1,6 @@
 package com.mkappworks.service;
 
+import com.mkappworks.config.GeoLocationProperties;
 import com.mkappworks.exceptions.InternalStatusRunTimeException;
 import com.mkappworks.exceptions.NoGeoLocationException;
 import com.mkappworks.exceptions.VehicleNotFoundException;
@@ -7,32 +8,29 @@ import com.mkappworks.proto.GeoLocation;
 import com.mkappworks.proto.ReactorVehicleGeoLocationServiceGrpc;
 import com.mkappworks.proto.Vehicle;
 import com.mkappworks.service.handlers.GeoLocationHandler;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 @GrpcService
+@RequiredArgsConstructor
 @Slf4j
 public class GeoLocationServiceGrpcImpl extends ReactorVehicleGeoLocationServiceGrpc.VehicleGeoLocationServiceImplBase {
 
     private final GeoLocationHandler geoLocationHandler;
     private final ScheduledExecutorService scheduler;
-
-    GeoLocationServiceGrpcImpl(GeoLocationHandler geoLocationHandler) {
-        this.geoLocationHandler = geoLocationHandler;
-        this.scheduler = Executors.newScheduledThreadPool(1);
-    }
+    private final GeoLocationProperties geoLocationProperties;
 
     @Override
     public Flux<GeoLocation> getGeoLocationsByVehicle(Mono<Vehicle> request) {
         return request.flatMapMany(vehicle -> {
-            // Simulate periodic location updates every 2 seconds using Flux.interval
-            return Flux.interval(Duration.ofSeconds(2))
+            // Simulate periodic location updates every waitTime seconds using Flux.interval
+            return Flux.interval(Duration.ofSeconds(geoLocationProperties.getWaitTime()))
                     .flatMap(tick -> {
                         try {
                             if (vehicle == null) return Mono.error(new VehicleNotFoundException());
