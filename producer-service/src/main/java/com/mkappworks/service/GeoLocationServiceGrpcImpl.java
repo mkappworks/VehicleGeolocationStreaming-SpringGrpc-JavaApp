@@ -2,12 +2,12 @@ package com.mkappworks.service;
 
 import com.mkappworks.config.GeoLocationProperties;
 import com.mkappworks.exceptions.InternalStatusRunTimeException;
-import com.mkappworks.exceptions.NoGeoLocationException;
 import com.mkappworks.exceptions.VehicleNotFoundException;
 import com.mkappworks.proto.GeoLocation;
 import com.mkappworks.proto.ReactorVehicleGeoLocationServiceGrpc;
 import com.mkappworks.proto.Vehicle;
 import com.mkappworks.service.handlers.GeoLocationHandler;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -34,9 +34,7 @@ public class GeoLocationServiceGrpcImpl extends ReactorVehicleGeoLocationService
                     .flatMap(tick -> {
                         try {
                             if (vehicle == null) return Mono.error(new VehicleNotFoundException());
-
                             GeoLocation geoLocation = geoLocationHandler.getGeoLocation(vehicle);
-                            if (geoLocation == null) return Mono.error(new NoGeoLocationException());
 
                             return Mono.just(geoLocation);
                         } catch (Exception e) {
@@ -51,6 +49,6 @@ public class GeoLocationServiceGrpcImpl extends ReactorVehicleGeoLocationService
                         scheduler.shutdown();
                         return Flux.error(e); // Propagate error to the client
                     });
-        });
+        }).switchIfEmpty(Flux.error(new VehicleNotFoundException()));
     }
 }
