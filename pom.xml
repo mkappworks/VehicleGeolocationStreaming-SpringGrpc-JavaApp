@@ -23,11 +23,15 @@
     </modules>
 
     <properties>
+        <grpc.java.version>1.58.0</grpc.java.version>
+        <grpc.spring.version>3.1.0.RELEASE</grpc.spring.version>
         <java.version>21</java.version>
+        <lombok.version>1.18.34</lombok.version>
+        <os.maven.plugin.version>1.7.1</os.maven.plugin.version>
+        <protobuf.maven.plugin.version>0.6.1</protobuf.maven.plugin.version>
+        <protoc.version>3.25.1</protoc.version>
         <reactive.grpc.version>1.2.4</reactive.grpc.version>
         <reactor.version>3.5.5</reactor.version>
-        <lombok.version>1.18.34</lombok.version>
-        <grpc.spring.version>3.1.0.RELEASE</grpc.spring.version>
     </properties>
 
     <dependencies>
