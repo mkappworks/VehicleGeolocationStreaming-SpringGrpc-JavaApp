@@ -3,6 +3,7 @@ package com.mkappworks.service;
 import com.mkappworks.proto.GeoLocation;
 import com.mkappworks.proto.ReactorVehicleGeoLocationServiceGrpc;
 import com.mkappworks.proto.Vehicle;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,11 +11,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("unchecked")
 class GeoLocationServiceTest {
 
     @Mock
@@ -50,7 +55,7 @@ class GeoLocationServiceTest {
 
     @Test
     void getGeoLocations_should_return_flux_of_geo_locations() {
-        Mockito.when(vehicleGeoLocationServiceStub.getGeoLocationsByVehicle(Mockito.any(Mono.class)))
+        Mockito.when(vehicleGeoLocationServiceStub.getGeoLocationsByVehicle(any(Mono.class)))
                 .thenReturn(Flux.just(geoLocation1, geoLocation2));
 
         Flux<GeoLocation> geoLocationFlux = geoLocationService.getGeoLocations(testVehicle);
@@ -64,7 +69,7 @@ class GeoLocationServiceTest {
 
     @Test
     void getGeoLocations_should_return_empty_flux_if_no_geo_locations() {
-        Mockito.when(vehicleGeoLocationServiceStub.getGeoLocationsByVehicle(Mockito.any(Mono.class)))
+        Mockito.when(vehicleGeoLocationServiceStub.getGeoLocationsByVehicle(any(Mono.class)))
                 .thenReturn(Flux.empty());
 
         Flux<GeoLocation> geoLocationFlux = geoLocationService.getGeoLocations(testVehicle);
