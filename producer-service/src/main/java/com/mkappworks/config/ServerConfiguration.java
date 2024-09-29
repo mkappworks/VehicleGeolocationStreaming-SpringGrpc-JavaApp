@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -30,5 +31,10 @@ public class ServerConfiguration {
             ScheduledExecutorService scheduler,
             GeoLocationProperties geoLocationProperties) {
         return new GeoLocationServiceGrpcImpl(geoLocationHandler, scheduler, geoLocationProperties);
+    }
+
+    @Bean
+    public Random random() {
+        return new Random();
     }
 }
