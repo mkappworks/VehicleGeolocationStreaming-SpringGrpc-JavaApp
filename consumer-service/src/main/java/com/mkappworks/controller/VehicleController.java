@@ -17,7 +17,7 @@ public class VehicleController {
     private final GeoLocationService geoLocationService;
 
     @GetMapping(value = "/location/{vehicleId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<GeoLocationResponse> getStreamBooksByAuthor(@PathVariable String vehicleId) {
+    public Flux<GeoLocationResponse> streamGeoLocationsByVehicle(@PathVariable String vehicleId) {
         Vehicle vehicle = Vehicle.newBuilder()
                 .setVehicleId(vehicleId)
                 .build();
