@@ -48,7 +48,7 @@ public class VehicleControllerTest {
     }
 
     @Test
-    void get_stream_books_by_author_returns_geo_location_responses() {
+    void stream_geo_locations_by_vehicle_returns_valid_responses() {
         webTestClient.get()
                 .uri("/api/v1/vehicle/location/{vehicleId}", VEHICLE_ID)
                 .exchange()
