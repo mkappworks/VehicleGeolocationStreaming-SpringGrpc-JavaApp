@@ -12,3 +12,6 @@ server:
 grpc:
   server:
     port: 9000
+
+geo-location:
+  waitTime: 2

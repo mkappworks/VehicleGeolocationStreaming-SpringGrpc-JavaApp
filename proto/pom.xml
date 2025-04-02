@@ -10,26 +10,12 @@
 
     <artifactId>proto</artifactId>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-protobuf</artifactId>
-            <version>${grpc.java.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-stub</artifactId>
-            <version>${grpc.java.version}</version>
-        </dependency>
-        <dependency> <!-- necessary for Java 9+ -->
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>annotations-api</artifactId>
-            <version>${tomcat.annotations.version}</version>
-            <scope>provided</scope>
+            <groupId>com.salesforce.servicelibs</groupId>
+            <artifactId>reactor-grpc-stub</artifactId>
+            <version>${reactive.grpc.version}</version>
         </dependency>
     </dependencies>
 
@@ -43,8 +29,8 @@
         </extensions>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
@@ -58,9 +44,6 @@
                     <pluginArtifact>
                         io.grpc:protoc-gen-grpc-java:${grpc.java.version}:exe:${os.detected.classifier}
                     </pluginArtifact>
-                    <protoSourceRoot>
-                        ${basedir}/src/main/proto/
-                    </protoSourceRoot>
                 </configuration>
                 <executions>
                     <execution>
@@ -68,9 +51,21 @@
                             <goal>compile</goal>
                             <goal>compile-custom</goal>
                         </goals>
+                        <configuration>
+                            <protocPlugins>
+                                <protocPlugin>
+                                    <id>reactor-grpc</id>
+                                    <groupId>com.salesforce.servicelibs</groupId>
+                                    <artifactId>reactor-grpc</artifactId>
+                                    <version>${reactive.grpc.version}</version>
+                                    <mainClass>com.salesforce.reactorgrpc.ReactorGrpcGenerator</mainClass>
+                                </protocPlugin>
+                            </protocPlugins>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>

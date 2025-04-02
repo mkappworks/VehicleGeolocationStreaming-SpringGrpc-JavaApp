@@ -9,10 +9,8 @@ server:
   http2:
     enabled: true
 
-consumer-service:
-  vehicle-geo-location:
-    host: localhost
-    port: 9000
-
-geo-location:
-  waitTime: 4
+grpc:
+  client:
+    producer-service:
+      address: static://localhost:9000
+      negotiationType: plaintext

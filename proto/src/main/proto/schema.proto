@@ -4,22 +4,19 @@ option java_multiple_files = true;
 
 package com.mkappworks.proto;
 
-message VehicleGeoLocation{
-  Vehicle vehicle = 1;
-  GeoLocation geoLocation = 2;
-}
-
 message Vehicle {
   string vehicle_id = 1;
 }
 
 message GeoLocation {
-  float longitude = 1;
-  float latitude = 2;
+  string vehicle_id = 1;
+  float longitude = 2;
+  float latitude = 3;
+  uint64 time_stamp = 4;
 }
 
 service VehicleGeoLocationService {
   //bi-directional streaming - Asynchronous
   //client will send stream of request and server will respond with stream of response.
-  rpc getGeoLocationsByVehicle(stream Vehicle) returns (stream VehicleGeoLocation) {}
+  rpc getGeoLocationsByVehicle(Vehicle) returns (stream GeoLocation) {}
 }
